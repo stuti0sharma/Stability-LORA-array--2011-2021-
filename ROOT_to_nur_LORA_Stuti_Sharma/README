@@ -1,0 +1,38 @@
+Main Processing Steps:
+1. Read LORA .root files (V1 or V2 formats).
+2. Load detector positions, signals, gains, logs, and noise data.
+3. Reconstruct event-level parameters:
+   - Arrival time differences
+   - Shower direction (zenith, azimuth)
+   - Shower core position
+   - Energy estimates and particle densities
+4. Write results to:
+   - `.dat` (human-readable summary),
+   - `.h5` (ADC traces),
+   - `.nur` (NuRadioReco binary format).
+
+Functions:
+- write_nur(evt, detectors, ev, outputdir, run_number, event_id):
+    Converts a reconstructed event into a NuRadioReco .nur file.
+- ProcessEventV2(outputdir, data_dir, root_name, run_number=0):
+    Full processing chain for a single ROOT file 
+    (adapted from scripts by Lucas Van Dongen).
+
+Imported Modules (project-specific):
+- LORAparameters : constants and detector setup parameters.
+- process_functions : helper routines for event processing.
+- read_functions : readers for ROOT files, logs, and noise data.
+- detector : detector and LASA classes with calibration loaders.
+- event : event reconstruction routines (timing, core, energy, density).
+
+Usage:
+    Set the `date`, `data_dir`, and `outputdir` variables inside the script.
+    The script will automatically find all .root files for the given date 
+    and process them. Results will be written to the specified output directory.
+
+Notes:
+    - Use `.dat` files for quick human-readable inspection.
+    - Use `.h5` files for detailed ADC traces and further numeric analysis.
+    - Use `.nur` files for NuRadioReco-based workflows.
+V1 format = older LORA ROOT file structure (before 2019-11-16).
+V2 format = newer ROOT file structure (after 2019-11-16).
